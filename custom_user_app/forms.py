@@ -8,4 +8,4 @@ class LoginForm(forms.Form):
 class Registration(forms.Form):
     name = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput)
-    displayname = forms.CharField(max_length=30)
+    display_name = forms.CharField(max_length=30)

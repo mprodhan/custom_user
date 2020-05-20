@@ -2,8 +2,10 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from custom_user_app.models import LeUser
 from custom_user_app.forms import LoginForm, Registration
+from custom_user.settings import AUTH_USER_MODEL
 
 def loginview(request):
     if request.method == "POST":
@@ -30,7 +32,7 @@ def signup(request):
         if form.is_valid():
             data = form.cleaned_data
             user = LeUser.objects.create_user(
-                name = data["name"],
+                username = data["name"],
                 password = data["password"],
                 display_name = data["display_name"]
             )
@@ -41,5 +43,6 @@ def signup(request):
     return render(request, "generic_form.html", {"form": form})
 
 def index(request):
-    data = LeUser.objects.all()
-    return render(request, "index.html", {"data": data})
+    data = request.user
+    auth_user = AUTH_USER_MODEL
+    return render(request, "index.html", {"data": data, "auth_user": auth_user})
